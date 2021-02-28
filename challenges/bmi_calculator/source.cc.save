@@ -1,0 +1,12 @@
+#include <iostream>
+
+// Makoto Miyamoto
+// COSC 1436
+// BMI Calculator
+
+// input: height: 5'4 or 5 ft 4  
+// total_inches = (feet * 12) + remaining_inches
+
+int main() {
+    
+}

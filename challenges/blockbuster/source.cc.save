@@ -1,0 +1,14 @@
+#include <iostream>
+#include <stdio.h>
+#include <math.h>
+
+using namespace std;
+
+int resolveMoviePoints(unsigned int n /* movies rented */) {asdasdasdsadasdasdasd    double y = 70.83*n*n - 25*n*n*n + 4.167*n*n*n*n;
+    cout << y << endl;
+    return 0;
+}
+
+int main(int argc, char const *argv[]) {
+    int n = resolveMoviePoints(2);
+}

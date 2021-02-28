@@ -1,0 +1,10 @@
+#include <iostream>
+#include <string>
+#include <map>
+
+std::map primaryColors<std::string, int>;
+std::map secondaryColors<int, std::strin
+
+int main() {
+
+}
