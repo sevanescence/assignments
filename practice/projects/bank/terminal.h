@@ -21,6 +21,7 @@
 namespace terminal {
     static int length{};
     static std::stringstream sstream;
+    void printRow();
     void clear() {
         if (std::system("CLS"))
             std::system("clear");
@@ -41,6 +42,19 @@ namespace terminal {
             len = length - line.length();
             std::cout << "║" << line << std::setw(len) << "" << "║" << std::endl;
         }
+    }
+    void printEach(std::stringstream* sstream, void(*f)()) {
+        int len{};
+        std::string line;
+        while (getline(*sstream, line)) {
+            len = length - line.length();
+            std::cout << "║" << line << std::setw(len) << "" << "║" << std::endl;
+            f();
+        }
+    }
+    void println(std::string line) {
+        int len{ length - (int) line.length() };
+        std::cout << "║" << line << std::setw(len) << "" << "║" << std::endl;
     }
     void dump() {
         print();
@@ -73,7 +87,7 @@ namespace terminal {
         int finalLength { std::abs(length - (int) info.length()) };
         std::string spacing ( finalLength, ' ' );
         std::cout << "║" << info << spacing << "║" << '\n';
-        std::cout << "╠" << generateToolbarBottom() << "╣" << '\n';
+        printRow();
     }
     std::string generateToolbarBottom() {
         std::string s {};
@@ -83,6 +97,10 @@ namespace terminal {
     void printBottom() {
         std::string s { generateToolbarBottom() };
         std::cout << "╚" << s << "╝" << '\n';
+    }
+    void printRow() {
+        std::string s { generateToolbarBottom() };
+        std::cout << "╠" << s << "╣" << '\n';
     }
 }
 
