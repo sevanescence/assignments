@@ -13,6 +13,8 @@ namespace terminal {
     struct Style;
     class Event;
     class ControlHandler;
+    class Body;
+    class TextBody;
     class Window;
     class Panel;
     class TextPanel;
@@ -24,12 +26,18 @@ namespace terminal {
     std::string Event::getKey() {
         return this->key;
     }
-    Window* Event::getWindow() {
-        return this->window;
+    Body* Event::getBody() {
+        return this->body;
     }
-    Event::Event(std::string key, Window* window) {
+    Event::Event(std::string key, Body* body) {
         this->key = key;
-        this->window = window;
+        this->body = body;
+    }
+    Window* Event::getBodyAsWindow() {
+        return (Window*) this->body;
+    }
+    TextBody* Event::getBodyAsTextBody() {
+        return (TextBody*) this->body;
     }
 
     class ControlHandler;
@@ -51,20 +59,16 @@ namespace terminal {
         this->callback = callback;
     }
 
-    class Window;
+    class Body;
 
-    void Window::addKeyController(std::string key, Callback callback) {
+    void Body::addKeyController(std::string key, Callback callback) {
         this->controllers.push_back(ControlHandler(key, callback));
     }
-    void Window::addContent(Panel panel) {
-        this->content.push_back(panel);
-    }
-    void Window::render() {
-        if (std::system("CLS"))
+    void Body::render(bool clear) {
+        if (clear && std::system("CLS"))
             std::system("clear");
-        std::cout << "Hello, world!" << std::endl;
     }
-    void Window::listen() {
+    void Body::listen() {
         std::string input;
         std::cin >> input;
         std::cin.clear();
@@ -81,6 +85,17 @@ namespace terminal {
         if (! close) {
             listen();
         }
+    }
+
+    class Window;
+
+    void Window::addContent(Panel panel) {
+        this->content.push_back(panel);
+    }
+    void Window::render(bool clear) {
+        if (clear && std::system("CLS"))
+            std::system("clear");
+        std::cout << "Hello, world!" << std::endl;
     }
 
 }

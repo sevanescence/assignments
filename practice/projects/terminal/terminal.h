@@ -1,6 +1,7 @@
 #ifndef TERMINAL_H
 #define TERMINAL_H
 
+#include <functional>
 #include <iostream>
 #include <iomanip>
 #include <sstream>
@@ -8,9 +9,11 @@
 #include <vector>
 
 namespace terminal {
-    class Event;
     struct Style;
+    class Event;
     class ControlHandler;
+    class Body;
+    class TextBody;
     class Window;
     class Panel;
     class TextPanel;
@@ -19,15 +22,18 @@ namespace terminal {
     class Event {
         private:
             std::string key;
-            Window* window;
+            Body* body;
         public:
             std::string getKey();
-            Window* getWindow();
-            Event(std::string key, Window* window);
+            Body* getBody();
+            Event(std::string key, Body* body);
+            Window* getBodyAsWindow();
+            TextBody* getBodyAsTextBody();
     };
 
     typedef void (*function)();
-    typedef bool (*event_callback)(Event event);
+    //typedef lambda []bool (*event_callback)(Event event);
+    typedef std::function<bool(Event)> event_callback;
 
     struct Style {
         public:
@@ -49,16 +55,28 @@ namespace terminal {
             void setCallback(terminal::event_callback callback);
     };
 
-    class Window {
+    class Body {
         private:
             int length;
-            std::vector<Panel> content;
             std::vector<ControlHandler> controllers;
         public:
             void addKeyController(std::string key, terminal::event_callback callback);
-            void addContent(Panel panel);
-            void render();
+            virtual void render(bool clear);
             void listen();
+    };
+
+    class TextBody : public Body {
+        private:
+            std::vector<std::u32string> content;
+        public:
+    };
+
+    class Window : public Body {
+        private:
+            std::vector<Panel> content;
+        public:
+            void addContent(Panel panel);
+            void render(bool clear) override;
     };
 
     class Panel {
