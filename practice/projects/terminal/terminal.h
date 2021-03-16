@@ -50,7 +50,7 @@ namespace terminal {
             std::string getKey();
             terminal::event_callback getCallback();
             ControlHandler();
-            ControlHandler(std::string, terminal::event_callback callback);
+            ControlHandler(std::string key, terminal::event_callback callback);
             void setKey(std::string key);
             void setCallback(terminal::event_callback callback);
     };
@@ -69,6 +69,9 @@ namespace terminal {
         private:
             std::vector<std::u32string> content;
         public:
+            void addContent(std::u32string line);
+            void addContent(std::string line);
+            void render(bool clear) override;
     };
 
     class Window : public Body {

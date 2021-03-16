@@ -10,27 +10,29 @@
 // todo add prefix option to allow for dynamic input
 
 int main(int argc, char const *argv[]) {
-    //terminal::Window window, modal;
-    terminal::Window window;
-    terminal::Window modal;
+    terminal::TextBody body;
 
-    window.addKeyController("0", [&modal](terminal::Event event) {
-        std::cout << "Displaying modal" << std::endl;
-        modal.render(false);
-        return false;
+    body.addContent("Hello");
+    body.addContent("Controls:");
+    body.addContent("0 - exit");
+    body.addContent("1 - re-render");
+    body.addContent("2 - print Testing to console");
+
+    body.addKeyController("0", [](terminal::Event event) {
+        if (std::system("CLS")) std::system("clear");
+        return true;
     });
-    window.addKeyController("1", [](terminal::Event event) {
+    body.addKeyController("1", [](terminal::Event event) {
         (*event.getBody()).render(true);
         return false;
     });
-    window.addKeyController("exit", [](terminal::Event event) {
-        if (std::system("CLS"))
-            std::system("clear");
-        return true;
+    body.addKeyController("2", [](terminal::Event event) {
+        std::cout << "Testing" << std::endl;
+        return false;
     });
 
-    window.render(true);
-    window.listen();
+    body.render(true);
+    body.listen();
 
     return 0;
 }

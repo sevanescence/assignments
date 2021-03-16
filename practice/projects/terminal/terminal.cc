@@ -1,7 +1,7 @@
 #include "terminal.h"
 
-#include <bits/stdc++.h>
 #include <iostream>
+#include <codecvt>
 #include <vector>
 #include <string>
 
@@ -29,10 +29,7 @@ namespace terminal {
     Body* Event::getBody() {
         return this->body;
     }
-    Event::Event(std::string key, Body* body) {
-        this->key = key;
-        this->body = body;
-    }
+    Event::Event(std::string key, Body* body) : key{ key }, body{ body } {}
     Window* Event::getBodyAsWindow() {
         return (Window*) this->body;
     }
@@ -48,10 +45,8 @@ namespace terminal {
     Callback ControlHandler::getCallback() {
         return this->callback;
     }
-    ControlHandler::ControlHandler(std::string key, Callback callback) {
-        this->key = key;
-        this->callback = callback;
-    }
+    ControlHandler::ControlHandler(std::string key, Callback callback) 
+        : key{ key }, callback{ callback } {}
     void ControlHandler::setKey(std::string key) {
         this->key = key;
     }
@@ -73,7 +68,7 @@ namespace terminal {
         std::cin >> input;
         std::cin.clear();
         std::cin.ignore(input.length(), '\n');
-        
+
         bool close;
         std::vector<ControlHandler>::iterator it;
         for (it = controllers.begin(); it != controllers.end(); ++it) {
@@ -85,6 +80,32 @@ namespace terminal {
         if (! close) {
             listen();
         }
+    }
+
+    class TextBody;
+
+    void TextBody::render(bool clear) {
+        if (clear && std::system("CLS"))
+            std::system("clear");
+        
+        std::u32string line;
+        std::vector<std::u32string>::iterator it;
+        std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> convert;
+        for (it = content.begin(); it != content.end(); ++it) {
+            line = (*it);
+            std::cout << convert.to_bytes(line) << '\n';
+        }
+    }
+    void TextBody::addContent(std::u32string line) {
+        this->content.push_back(line);
+    }
+    void TextBody::addContent(std::string line) {
+        std::u32string ln;
+        for (auto c = line.begin(); c != line.end(); ++c) {
+            char ch = *c;
+            ln.push_back(ch);
+        }
+        addContent(ln);
     }
 
     class Window;
