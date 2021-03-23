@@ -5,6 +5,10 @@
 #include <random>
 #include <chrono>
 
+// Makoto Miyamoto
+// COSC 1436
+// minmax
+
 struct options {
     char const* filepath;
     bool generate_file;
@@ -35,7 +39,6 @@ int main(int argc, char const* argv[]) {
         if (exec.substr(0, 2).compare("./") == 0) {
             exec = exec.substr(2);
         }
-        std::cout << exec << std::endl;
         std::cout << "usage: " << exec << " <filepath> [-g] [-d] [-p] [-help]" << '\n';
         std::cout << "  filepath      any file path - must be the first argument." << '\n';
         std::cout << "  -g            generate file despite defined path." << '\n';
@@ -51,10 +54,8 @@ int main(int argc, char const* argv[]) {
     int min { INT32_MAX };
     int max { INT32_MIN };
     while (numbers_file >> current) {
-        if (current > max)
-            max = current;
-        if (current < min)
-            min = current;
+        if (current > max) max = current;
+        if (current < min) min = current;
     }
     numbers_file.close();
 
