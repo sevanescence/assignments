@@ -24,6 +24,9 @@ double queryDouble(std::string prompt);
 void clear();
 
 int main(void) {
+    if (std::system("cls")) {
+        std::system("clear");
+    }
     int choice;
     while (choice != 6) {
         displayMenu();
