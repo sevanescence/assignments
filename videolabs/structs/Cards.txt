@@ -1,0 +1,15 @@
+Sorin Markov
+Creature
+Vampire
+4
+4
+Edgar Markov
+Creature
+Vampire
+5
+5
+Longclaw
+Creature
+Bear
+10
+20
